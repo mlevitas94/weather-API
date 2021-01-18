@@ -1,0 +1,49 @@
+@import '../../variables.scss';
+
+.homeCont{
+    display: flex;
+    background: linear-gradient(to top right, #5900ff 0%, #ffffff 100%);
+    height: 100vh;
+    .middleFlex{
+        display: flex;
+        height: 100%;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        h1{
+            font-size: $size2;
+            position: absolute;
+            top: 100px;
+        }
+        .searchBar{
+            position: relative;
+            input{
+                font-size: $size1;
+                padding: 5px 10px;
+                border: none;
+                outline: none;
+                border-radius: 10px;
+            }
+            .autoCompleteCont{
+                background-color: white;
+                position: relative;
+                top: 30px;
+                position: absolute;
+                width: 100%;
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
+                div{
+                    padding: 11px;
+                    &:nth-child(1){
+                        padding-top: 22px;
+                    }
+                }
+    
+            }
+        }
+
+    }
+
+}
