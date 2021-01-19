@@ -30,7 +30,7 @@ const Home = (props) => {
             <div className='middleFlex'>
                 <h1>Weather API</h1>
                 <div className='searchBar'>
-                    <input maxLength="100" value={props.searcheQuery} type='text' onChange={(e) => {  }} />
+                    <input maxLength="100" value={props.searcheQuery} type='text' onChange={(e) => { autoComplete(e) }} />
                     <div className='autoCompleteCont'>
                         {
                             props.searchQuery.length > 0 && props.searchedLocations.length === 0 ?
