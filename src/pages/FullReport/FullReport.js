@@ -7,12 +7,12 @@ const FullReport = () => {
         <div className='fullReportCont'>
             <div className='header'>
                 <h3>Mon, July 6</h3>
-                <div className='tempType'>C</div>
+                <div className='tempType'>C º</div>
             </div>
             <div className='mainInfo'>
                 <div className='infoColumnLeft'>
                     <h4>City</h4>
-                    <span className='temp'>33 *</span>
+                    <span className='temp'>33º</span>
                     <div className='highLow'>
                         <span className='high'>44</span>
                         <span className='low'>22</span>
@@ -21,27 +21,53 @@ const FullReport = () => {
                         Sunny
                     </div>
                 </div>
+                <div className='infoColumnRight'>
+                    <div>
+                        <span>Sunrise</span>
+                        <span>3:55 AM</span>
+                    </div>
+                    <div>
+                        <span>Sunrise</span>
+                        <span>3:55 AM</span>
+                    </div>
+                    <div>
+                        <span>Sunrise</span>
+                        <span>3:55 AM</span>
+                    </div>
+                    <div>
+                        <span>Sunrise</span>
+                        <span>3:55 AM</span>
+                    </div>
+                    <div>
+                        <span>Sunrise</span>
+                        <span>3:55 AM</span>
+                    </div>
+                    <div>
+                        <span>Sunrise</span>
+                        <span>3:55 AM</span>
+                    </div>
+                </div>
             </div>
             <div className='hourly'>
                 <div>
                     <span>Now</span>
-                    <span>28 *</span>
+                    <span>28 º</span>
                 </div>
                 <div>
                     <span>Now</span>
-                    <span>28 *</span>
+                    <span>28 º</span>
                 </div>
                 <div>
                     <span>Now</span>
-                    <span>28 *</span>
+                    <span>28 º</span>
                 </div>
                 <div>
                     <span>Now</span>
-                    <span>28 *</span>
+                    <span>28 º</span>
                 </div>
                 <div>
                     <span>Now</span>
-                    <span>28 *</span>
+                    <span>28 º</span>
                 </div>
             </div>
             <div className='threeDay'>
