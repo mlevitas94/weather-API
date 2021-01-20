@@ -1,6 +1,7 @@
 const defaultState = {
     searchQuery: '',
-    searchedLocations: []
+    searchedLocations: [],
+    setLocation: null
 }
 
 function reducer(state = defaultState, action) {
@@ -14,6 +15,11 @@ function reducer(state = defaultState, action) {
             return {
                 ...state,
                 searchQuery: action.payload
+            }
+        case 'SET_SELECTED':
+            return {
+                ...state,
+                setLocation: action.payload
             }
         default: return state
     }

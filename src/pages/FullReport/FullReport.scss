@@ -46,6 +46,9 @@
                     display: flex;
                     span {
                         margin-right: 11px;
+                        svg{
+                            color: $subtle;
+                        }
                     }
                 }
             }
@@ -56,17 +59,22 @@
                 display: flex;
                 justify-content: space-between;
                 flex-wrap: wrap;
-                width: 138px;
                 align-items: center;
+                text-align: left;
+                width: 86%;
+                max-width: 170px;
     
                 div{
+                    &:nth-child(2),&:nth-child(4),&:nth-child(6){
+                        text-align: right;
+                    }
                     span{
+                        display: block;
                         &:first-child{
                             margin-bottom: 10px;
                             color: $subtle;
                             text-decoration: underline;
                         }
-                        display: block;
                     }
                 }
             }
@@ -96,9 +104,15 @@
                 margin: 11px 0;
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
                 span{
                     &:nth-child(2){
                         color: $subtle;
+                    }
+                }
+                .icon{
+                    img{
+                        width: 35px;
                     }
                 }
                 .highLow{
