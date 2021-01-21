@@ -2,7 +2,7 @@ import React from 'react'
 import './Home.scss'
 import Axios from 'axios'
 import { connect } from 'react-redux'
-import { Redirect, useHistory } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 const Home = (props) => {
 
 
@@ -40,7 +40,6 @@ const Home = (props) => {
             console.log(err)
         })
     }
-    console.log(props.setLocation)
     return (
         <>
             {

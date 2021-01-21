@@ -58,7 +58,7 @@ const FullReport = (props) => {
                         <div className='mainInfo'>
                             <div className='infoColumnLeft'>
                                 <h4>{setLocation.location.name}</h4>
-                                <span className='temp'>33º</span>
+                                <span className='temp'>{setLocation.current.temp_f}º</span>
                                 <div className='highLow'>
                                     <span className='high'> <FontAwesomeIcon icon={faChevronUp} /> {forecastToday.day.maxtemp_f}</span>
                                     <span className='low'><FontAwesomeIcon icon={faChevronDown} /> {forecastToday.day.mintemp_f}</span>
@@ -96,25 +96,23 @@ const FullReport = (props) => {
                             </div>
                         </div>
                         <div className='hourly'>
-                            {forecastToday.hour.map((hour, i) => {
-                                if(setLocation.current.last_updated_epoch >= hour.time_epoch){
-                                    return
-                                }else{
-                                    return (
-                                        <div key={i}>
-                                            <span>{getTime(hour)}</span>
-                                            <span>{hour.temp_f} º</span>
-                                        </div>
-                                    )
-                                }
+                            {forecastToday.hour.filter((hour, i) => {
+                                return setLocation.current.last_updated_epoch <= hour.time_epoch       
+                            }).slice(0,5).map((hour, i) => {
+                                return (
+                                    <div key={i}>
+                                        <span>{getTime(hour)}</span>
+                                        <span>{hour.temp_f} º</span>
+                                    </div>
+                                )
                             })}
                         </div>
                         <div className='threeDay'>
                             {setLocation.forecast.forecastday.map((day, i) => {
                                 return (
                                     <div key={i} className='row'>
-                                        <span>{getWeekDay(day)}</span>
-                                        <span className='icon'><img src={day.day.condition.icon}/></span>
+                                        <span className='weekday'>{getWeekDay(day)}</span>
+                                        <span className='icon'><img alt="weather icon" src={day.day.condition.icon}/></span>
                                         <div className='highLow'><span><FontAwesomeIcon icon={faChevronUp} /> {day.day.maxtemp_f}</span> <span><FontAwesomeIcon icon={faChevronDown} /> {day.day.mintemp_f}</span></div>
                                     </div>
                                 )

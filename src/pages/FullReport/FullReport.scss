@@ -9,18 +9,18 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    .fullReportFlex{
+    .fullReportFlex {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         height: 100%;
         max-height: 700px;
-        
+
         .header {
             position: relative;
             margin-top: 44px;
             text-align: center;
-            span{
+            span {
                 position: absolute;
                 right: 22px;
                 top: 0;
@@ -37,6 +37,12 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+                max-width: 140px;
+                h4 {
+                    color: $bold;
+                    font-weight: bold;
+                    text-decoration: underline;
+                }
                 .temp {
                     display: block;
                     font-size: $size2;
@@ -44,33 +50,42 @@
                 }
                 .highLow {
                     display: flex;
+                    flex-wrap: wrap;
                     span {
-                        margin-right: 11px;
-                        svg{
+                        margin: 11px 11px 11px 0;
+                        &:nth-child(2) {
+                            color: $subtle;
+                        }
+                        svg {
                             color: $subtle;
                         }
                     }
                 }
+
+                .description {
+                    color: $subtle;
+                }
             }
-            .divider{
+            .divider {
                 height: 100%;
             }
-            .infoColumnRight{
+            .infoColumnRight {
                 display: flex;
                 justify-content: space-between;
                 flex-wrap: wrap;
                 align-items: center;
                 text-align: left;
-                width: 86%;
-                max-width: 170px;
-    
-                div{
-                    &:nth-child(2),&:nth-child(4),&:nth-child(6){
+                max-width: 160px;
+
+                div {
+                    &:nth-child(2),
+                    &:nth-child(4),
+                    &:nth-child(6) {
                         text-align: right;
                     }
-                    span{
+                    span {
                         display: block;
-                        &:first-child{
+                        &:first-child {
                             margin-bottom: 10px;
                             color: $subtle;
                             text-decoration: underline;
@@ -85,11 +100,17 @@
             justify-content: space-between;
             border-top: 1px solid $subtle;
             border-bottom: 1px solid $subtle;
+            font-size: $smSize2;
             div {
+                min-width: 12%;
+                margin: 0 5px;
+                text-align: center;
                 span {
+                    line-height: 1rem;
                     display: block;
                     margin: 10px 0;
-                    &:first-child{
+                    width: 100%;
+                    &:first-child {
                         color: $subtle;
                     }
                 }
@@ -105,69 +126,98 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                span{
-                    &:nth-child(2){
+                position: relative;
+                text-align: center;
+                span {
+                    &:nth-child(2) {
                         color: $subtle;
                     }
                 }
-                .icon{
-                    img{
+
+                .icon {
+                    img {
                         width: 35px;
                     }
                 }
-                .highLow{
-                    span{
+                .highLow {
+                    display: flex;
+                    flex-flow: wrap;
+                    justify-content: center;
+
+                    span {
                         margin-right: 11px;
                     }
                 }
             }
         }
-        @media screen and (min-width: $widthSm){
-            .header{
-                span{
+        @media screen and (min-width: 350px) {
+            .threeDay {
+                .weekday {
+                    position: absolute;
+                    left: 0;
+                }
+                .icon {
+                    margin: 0 auto;
+                }
+                .highLow {
+                    position: absolute;
+                    display: block;
+                    right: 0;
+                }
+            }
+        }
+        @media screen and (min-width: $widthSm) {
+            .header {
+                span {
                     right: 0;
                     left: 275px;
                 }
             }
-            .mainInfo{
+            .mainInfo {
                 justify-content: center;
                 margin: 22px auto;
                 width: 100%;
-                .divider{
+                .divider {
                     border-right: 1px solid $main;
                     margin: 0 44px;
                 }
             }
-    
-            .hourly{
+
+            .hourly {
                 max-width: 700px;
                 width: 100%;
                 margin: 0 auto;
+                font-size: $smSize1;
             }
-    
-            .threeDay{
+        }
+        @media screen and (min-width: $widthMs) {
+            .threeDay {
                 flex-direction: row;
                 justify-content: space-between;
-                .row{
+                .row {
                     padding: 11px 22px;
                     border-radius: 10px;
                     flex-direction: column;
                     align-items: center;
                     background-color: #00000045;
-                    .icon{
+                    min-width: 170px;
+                    .icon {
                         margin: 11px 0;
+                    }
+                    .weekday {
+                        position: static;
+                    }
+                    .highLow {
+                        position: static;
                     }
                 }
             }
         }
-        @media screen and (min-width: $widthMd){
-            .threeDay{
-                justify-content: center;
-                .row{
-                    margin: 0 44px;
-                }
+        @media screen and (min-width: $widthMd) {
+            .threeDay {
+                width: 700px;
+                margin: 0 auto;
             }
         }
     }
-    
 }
