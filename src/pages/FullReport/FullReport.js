@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import './FullReport.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,8 +9,10 @@ const FullReport = (props) => {
     const { setLocation } = props
     const forecastToday = !setLocation ? null : setLocation.forecast.forecastday[0]
 
+    const [tempType, setTempType] = useState('F')
+
     const getWeekDay = (day) => {
-        switch (new Date(day.date).getDay()) {
+        switch (day.getDay()) {
             case 0:
                 return 'Sunday'
             case 1:
@@ -31,18 +33,55 @@ const FullReport = (props) => {
         }
     }
 
+    const getMonth = (month) => {
+        switch (month.getMonth()) {
+            case 0:
+                return 'January'
+            case 1:
+                return 'Februrary'
+            case 2:
+                return 'March'
+            case 3:
+                return 'April'
+            case 4:
+                return 'May'
+            case 5:
+                return 'June'
+            case 6:
+                return 'July'
+            case 7:
+                return 'August'
+            case 8:
+                return 'September'
+            case 9:
+                return 'October'
+            case 10:
+                return 'November'
+            case 11:
+                return 'December'
+            default:
+                return
+
+        }
+    }
+
     const getTime = (time) => {
         let hour = new Date(time.time_epoch * 1000).getHours()
         let morningOrNight = 'AM'
-        if(hour > 11){
+        if (hour > 11) {
             morningOrNight = 'PM'
             hour = hour - 12
         }
-        if(hour === 0){
+        if (hour === 0) {
             hour = 12
         }
         return `${hour}:00 ${morningOrNight}`
 
+    }
+
+    const getDate = (date) => {
+        const selectedDate = new Date(date)
+        return `${getWeekDay(selectedDate)}, ${getMonth(selectedDate)} ${selectedDate.getDate()}`
     }
     return (
         <>
@@ -53,15 +92,15 @@ const FullReport = (props) => {
                     <div className='fullReportFlex'>
 
                         <div className='header'>
-                            <h3>Mon, July 6 <span className='tempType'>º F</span></h3>
+                            <h3>{getDate(setLocation.location.localtime)} <span className='tempType' onClick={() => { setTempType(tempType === 'F' ? 'C' : 'F') }}>º {tempType}</span></h3>
                         </div>
                         <div className='mainInfo'>
                             <div className='infoColumnLeft'>
                                 <h4>{setLocation.location.name}</h4>
-                                <span className='temp'>{setLocation.current.temp_f}º</span>
+                                <span className='temp'>{tempType === 'F' ? setLocation.current.temp_f : setLocation.current.temp_c}º</span>
                                 <div className='highLow'>
-                                    <span className='high'> <FontAwesomeIcon icon={faChevronUp} /> {forecastToday.day.maxtemp_f}</span>
-                                    <span className='low'><FontAwesomeIcon icon={faChevronDown} /> {forecastToday.day.mintemp_f}</span>
+                                    <span className='high'> <FontAwesomeIcon icon={faChevronUp} /> {tempType === 'F' ? forecastToday.day.maxtemp_f : forecastToday.day.maxtemp_c}</span>
+                                    <span className='low'><FontAwesomeIcon icon={faChevronDown} /> {tempType === 'F' ? forecastToday.day.mintemp_f : forecastToday.day.mintemp_c}</span>
                                 </div>
                                 <div className='description'>
                                     {forecastToday.day.condition.text}
@@ -96,13 +135,13 @@ const FullReport = (props) => {
                             </div>
                         </div>
                         <div className='hourly'>
-                            {forecastToday.hour.filter((hour, i) => {
-                                return setLocation.current.last_updated_epoch <= hour.time_epoch       
-                            }).slice(0,5).map((hour, i) => {
+                            {[...forecastToday.hour, ...setLocation.forecast.forecastday[1].hour].filter((hour, i) => {
+                                return setLocation.current.last_updated_epoch <= hour.time_epoch
+                            }).slice(0, 5).map((hour, i) => {
                                 return (
                                     <div key={i}>
                                         <span>{getTime(hour)}</span>
-                                        <span>{hour.temp_f} º</span>
+                                        <span>{tempType === 'F' ? hour.temp_f : hour.temp_c} º</span>
                                     </div>
                                 )
                             })}
@@ -111,9 +150,9 @@ const FullReport = (props) => {
                             {setLocation.forecast.forecastday.map((day, i) => {
                                 return (
                                     <div key={i} className='row'>
-                                        <span className='weekday'>{getWeekDay(day)}</span>
-                                        <span className='icon'><img alt="weather icon" src={day.day.condition.icon}/></span>
-                                        <div className='highLow'><span><FontAwesomeIcon icon={faChevronUp} /> {day.day.maxtemp_f}</span> <span><FontAwesomeIcon icon={faChevronDown} /> {day.day.mintemp_f}</span></div>
+                                        <span className='weekday'>{getWeekDay(new Date(day.date))}</span>
+                                        <span className='icon'><img alt="weather icon" src={day.day.condition.icon} /></span>
+                                        <div className='highLow'><span><FontAwesomeIcon icon={faChevronUp} /> {tempType === 'F' ? day.day.maxtemp_f : day.day.maxtemp_c}</span> <span><FontAwesomeIcon icon={faChevronDown} /> {tempType === 'F' ? day.day.mintemp_f : day.day.mintemp_c}</span></div>
                                     </div>
                                 )
                             })}

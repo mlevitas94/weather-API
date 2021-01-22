@@ -22,8 +22,12 @@
             text-align: center;
             span {
                 position: absolute;
-                right: 22px;
+                left: 22px;
                 top: 0;
+                width: 23px;
+                &:hover{
+                    cursor: pointer;
+                }
             }
         }
         .mainInfo {
@@ -168,9 +172,11 @@
         }
         @media screen and (min-width: $widthSm) {
             .header {
+                max-width: 656px;
+                margin-right: auto;
+                margin-left: auto;
                 span {
-                    right: 0;
-                    left: 275px;
+                    left: -100px;
                 }
             }
             .mainInfo {
