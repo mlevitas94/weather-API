@@ -42,6 +42,10 @@
                     &:hover{
                         cursor: pointer;
                     }
+                    &:last-child{
+                        border-bottom-right-radius: 10px;
+                        border-bottom-left-radius: 10px;
+                    }
                 }
     
             }

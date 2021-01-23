@@ -45,23 +45,35 @@ const Home = (props) => {
         if (e.keyCode === 38 || e.keyCode === 40) {
             const droppedDown = document.querySelectorAll('.bar');
             if (droppedDown) {
-                let currentHighlight;
+                let currentHighlight = 0;
                 droppedDown.forEach((bar, i) => {
                     if (bar.classList.contains('highlight')) {
                         currentHighlight = i;
                     }
                     bar.classList.remove('highlight')
                 });
-                if (!currentHighlight) {
-                    droppedDown[0]?.classList.add('highlight')
-                } else if (e.keyCode === 38) {
-                    droppedDown[currentHighlight + 1].classList.add('highlight')
-                } else if (e.keyCode === 40) {
+                if (e.keyCode === 38) {
+                    if (currentHighlight === 0) {
+                        return droppedDown[droppedDown.length - 1].classList.add('highlight')
+                    }
                     droppedDown[currentHighlight - 1].classList.add('highlight')
+                } else if (e.keyCode === 40) {
+                    if (currentHighlight === droppedDown.length - 1) {
+                        return droppedDown[0].classList.add('highlight')
+                    }
+                    droppedDown[currentHighlight + 1].classList.add('highlight')
                 } else {
                     return
                 }
             }
+        }
+        if (e.keyCode === 13) {
+            props.searchedLocations.forEach(location => {
+                console.log(location.name, document.querySelector('.highlight').innerHTML)
+                if (location.name === document.querySelector('.highlight').innerText) {
+                    getFullReport(`${location.lat},${location.lon}`)
+                }
+            });
         }
 
     }
@@ -78,10 +90,7 @@ const Home = (props) => {
                                     value={props.searcheQuery}
                                     onChange={(e) => { autoComplete(e) }}
                                     onKeyUp={(e) => { arrowNavigation(e) }}
-                                    onBlur={(e) => {
-
-                                        document.querySelector('.autoCompleteCont').style.display = 'none'
-                                    }}
+                                    onBlur={() => { document.querySelector('.autoCompleteCont').style.display = 'none' }}
                                     onFocus={() => { document.querySelector('.autoCompleteCont').style.display = 'block' }} />
                                 <div className='autoCompleteCont'>
                                     {
@@ -91,8 +100,8 @@ const Home = (props) => {
                                             props.searchedLocations?.map((location, i) => {
                                                 return (
                                                     i > 4 ? null :
-                                                        <div key={i} className='bar' onMouseDown={() => {
-                                                            getFullReport(`${location.lat},${location.lon}`, location)
+                                                        <div key={i} className={`bar ${i === 0 ? 'highlight' : null}`} onMouseDown={() => {
+                                                            getFullReport(`${location.lat},${location.lon}`)
                                                         }}>
                                                             <span>{location.name}</span>
                                                         </div>
