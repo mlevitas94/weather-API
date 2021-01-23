@@ -8,7 +8,7 @@ const Home = (props) => {
 
     const autoComplete = (e) => {
         props.setSearchValue(e.target.value)
-        if (props.searchQuery < 2) {
+        if (e.target.value.length < 2) {
             return
         }
         const key = process.env.REACT_APP_KEY
@@ -25,7 +25,7 @@ const Home = (props) => {
         })
     }
 
-    const getFullReport = (locationLatLong, location) => {
+    const getFullReport = (locationLatLong) => {
         const key = process.env.REACT_APP_KEY
         const options = {
             params: {
@@ -35,7 +35,7 @@ const Home = (props) => {
             }
         }
         Axios.request(`http://api.weatherapi.com/v1/forecast.json`, options).then(res => {
-            res.data.length === 0 ? props.setSelected(null) : props.setSelected(res.data)
+            res.data.length === 0 ? props.setSelected([]) : props.setSelected(res.data)
         }).catch(err => {
             console.log(err)
         })
@@ -53,7 +53,7 @@ const Home = (props) => {
                     bar.classList.remove('highlight')
                 });
                 if (!currentHighlight) {
-                    droppedDown[0].classList.add('highlight')
+                    droppedDown[0]?.classList.add('highlight')
                 } else if (e.keyCode === 38) {
                     droppedDown[currentHighlight + 1].classList.add('highlight')
                 } else if (e.keyCode === 40) {
@@ -78,25 +78,26 @@ const Home = (props) => {
                                     value={props.searcheQuery}
                                     onChange={(e) => { autoComplete(e) }}
                                     onKeyUp={(e) => { arrowNavigation(e) }}
-                                    onBlur={() => { props.setSearchedLocations(null) }} />
+                                    onBlur={(e) => {
+
+                                        document.querySelector('.autoCompleteCont').style.display = 'none'
+                                    }}
+                                    onFocus={() => { document.querySelector('.autoCompleteCont').style.display = 'block' }} />
                                 <div className='autoCompleteCont'>
                                     {
-                                        props.setSearchedLocations === null ?
-                                            null
+                                        props.searchedLocations.length === 0 && props.searchQuery.length > 2 ?
+                                            <div>Loading</div>
                                             :
-                                            props.searchedLocations.length === 0 && props.searchQuery.length > 2 ?
-                                                <div>Loading</div>
-                                                :
-                                                props.searchedLocations.map((location, i) => {
-                                                    return (
-                                                        i > 4 ? null :
-                                                            <div key={i} className='bar' onClick={() => {
-                                                                getFullReport(`${location.lat},${location.lon}`, location)
-                                                            }}>
-                                                                <span>{location.name}</span>
-                                                            </div>
-                                                    )
-                                                })
+                                            props.searchedLocations?.map((location, i) => {
+                                                return (
+                                                    i > 4 ? null :
+                                                        <div key={i} className='bar' onMouseDown={() => {
+                                                            getFullReport(`${location.lat},${location.lon}`, location)
+                                                        }}>
+                                                            <span>{location.name}</span>
+                                                        </div>
+                                                )
+                                            })
                                     }
 
                                 </div>
