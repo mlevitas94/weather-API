@@ -35,10 +35,35 @@ const Home = (props) => {
             }
         }
         Axios.request(`http://api.weatherapi.com/v1/forecast.json`, options).then(res => {
-            props.setSelected(res.data)
+            res.data.length === 0 ? props.setSelected(null) : props.setSelected(res.data)
         }).catch(err => {
             console.log(err)
         })
+    }
+
+    const arrowNavigation = (e) => {
+        if (e.keyCode === 38 || e.keyCode === 40) {
+            const droppedDown = document.querySelectorAll('.bar');
+            if (droppedDown) {
+                let currentHighlight;
+                droppedDown.forEach((bar, i) => {
+                    if (bar.classList.contains('highlight')) {
+                        currentHighlight = i;
+                    }
+                    bar.classList.remove('highlight')
+                });
+                if (!currentHighlight) {
+                    droppedDown[0].classList.add('highlight')
+                } else if (e.keyCode === 38) {
+                    droppedDown[currentHighlight + 1].classList.add('highlight')
+                } else if (e.keyCode === 40) {
+                    droppedDown[currentHighlight - 1].classList.add('highlight')
+                } else {
+                    return
+                }
+            }
+        }
+
     }
     return (
         <>
@@ -49,22 +74,29 @@ const Home = (props) => {
                         <div className='middleFlex'>
                             <h1>Weather API</h1>
                             <div className='searchBar'>
-                                <input maxLength="100" value={props.searcheQuery} type='text' onChange={(e) => { autoComplete(e) }} />
+                                <input maxLength="100" type='text'
+                                    value={props.searcheQuery}
+                                    onChange={(e) => { autoComplete(e) }}
+                                    onKeyUp={(e) => { arrowNavigation(e) }}
+                                    onBlur={() => { props.setSearchedLocations(null) }} />
                                 <div className='autoCompleteCont'>
                                     {
-                                        props.searchQuery.length > 0 && props.searchedLocations.length === 0 ?
-                                            <div>Loading</div>
+                                        props.setSearchedLocations === null ?
+                                            null
                                             :
-                                            props.searchedLocations.map((location, i) => {
-                                                return (
-                                                    i > 4 ? null :
-                                                        <div key={i} className='bar' onClick={() => {
-                                                            getFullReport(`${location.lat},${location.lon}`, location)
-                                                        }}>
-                                                            <span>{location.name}</span>
-                                                        </div>
-                                                )
-                                            })
+                                            props.searchedLocations.length === 0 && props.searchQuery.length > 2 ?
+                                                <div>Loading</div>
+                                                :
+                                                props.searchedLocations.map((location, i) => {
+                                                    return (
+                                                        i > 4 ? null :
+                                                            <div key={i} className='bar' onClick={() => {
+                                                                getFullReport(`${location.lat},${location.lon}`, location)
+                                                            }}>
+                                                                <span>{location.name}</span>
+                                                            </div>
+                                                    )
+                                                })
                                     }
 
                                 </div>
@@ -83,7 +115,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setSearchValue: (value) => { dispatch({ type: 'SET_QUERY', payload: value }) },
         setSearchedLocations: (locations) => { dispatch({ type: 'SET_LOCATIONS', payload: locations }) },
-        setSelected: (data) => { dispatch({ type: 'SET_SELECTED', payload: data}) }
+        setSelected: (data) => { dispatch({ type: 'SET_SELECTED', payload: data }) }
     }
 }
 
