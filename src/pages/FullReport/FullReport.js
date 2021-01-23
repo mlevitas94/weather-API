@@ -66,7 +66,7 @@ const FullReport = (props) => {
     }
 
     const getTime = (time) => {
-        let hour = new Date(time.time_epoch * 1000).getHours()
+        let hour = new Date(time.time).getHours()
         let morningOrNight = 'AM'
         if (hour > 11) {
             morningOrNight = 'PM'
@@ -82,6 +82,14 @@ const FullReport = (props) => {
     const getDate = (date) => {
         const selectedDate = new Date(date)
         return `${getWeekDay(selectedDate)}, ${getMonth(selectedDate)} ${selectedDate.getDate()}`
+    }
+
+    const timeCompare = () => {
+       const currentHour = new Date(setLocation.location.localtime).getHours()
+       return [...forecastToday.hour, ...setLocation.forecast.forecastday[1].hour].filter(hour => {
+        return currentHour <= new Date(hour.time).getHours()
+    }).slice(0, 5)
+
     }
     return (
         <>
@@ -135,9 +143,7 @@ const FullReport = (props) => {
                             </div>
                         </div>
                         <div className='hourly'>
-                            {[...forecastToday.hour, ...setLocation.forecast.forecastday[1].hour].filter((hour, i) => {
-                                return setLocation.current.last_updated_epoch <= hour.time_epoch
-                            }).slice(0, 5).map((hour, i) => {
+                            {timeCompare().map((hour, i) => {
                                 return (
                                     <div key={i}>
                                         <span>{getTime(hour)}</span>
