@@ -1,9 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Home.scss'
 import Axios from 'axios'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 const Home = (props) => {
+
+    useEffect(() => {
+        if (localStorage.getItem('recent') === null) {
+            props.setRecents([])
+        } else {
+            const key = process.env.REACT_APP_KEY
+            const recentsRequest = JSON.parse(localStorage.getItem('recent')).map(latLong => {
+                const options = {
+                    params: {
+                        key,
+                        q: latLong,
+                    }
+                }
+                return Axios.request(`http://api.weatherapi.com/v1/current.json`, options)
+            })
+            Promise.all(recentsRequest).then(results => console.log(results))
+        }
+    }, [])
 
 
     const autoComplete = (e) => {
@@ -25,17 +43,27 @@ const Home = (props) => {
         })
     }
 
-    const getFullReport = (locationLatLong) => {
+    const getFullReport = (location) => {
         const key = process.env.REACT_APP_KEY
         const options = {
             params: {
                 key,
-                q: locationLatLong,
+                q: `${location.lat},${location.lon}`,
                 days: 3
             }
         }
         Axios.request(`http://api.weatherapi.com/v1/forecast.json`, options).then(res => {
             res.data.length === 0 ? props.setSelected([]) : props.setSelected(res.data)
+            if (localStorage.getItem('recent') === null || localStorage.getItem('saved') === null) {
+                return
+            }
+
+            let recents = JSON.parse(localStorage.getItem('recent'))
+            if (recents.length === 5) {
+                recents.pop()
+            }
+
+            localStorage.setItem('recent', JSON.stringify([`${location.lat},${location.lon}`, ...recents]))
         }).catch(err => {
             console.log(err)
         })
@@ -85,13 +113,22 @@ const Home = (props) => {
                     <div className='homeCont'>
                         <div className='middleFlex'>
                             <h1>Weather API</h1>
+                            <div className='recents'>
+                                {
+                                    props.recents === null
+                                        ?
+                                        'null'
+                                        :
+                                        'recents'
+                                }
+                            </div>
                             <div className='searchBar'>
-                                <input maxLength="100" type='text'
+                                <input maxLength="100" type='text' placeholder="Enter ZIP or name"
                                     value={props.searcheQuery}
                                     onChange={(e) => { autoComplete(e) }}
                                     onKeyUp={(e) => { arrowNavigation(e) }}
                                     onBlur={() => { document.querySelector('.autoCompleteCont').style.display = 'none' }}
-                                    onFocus={() => { document.querySelector('.autoCompleteCont').style.display = 'block' }} />
+                                    onFocus={() => { localStorage.clear(); document.querySelector('.autoCompleteCont').style.display = 'block' }} />
                                 <div className='autoCompleteCont'>
                                     {
                                         props.searchedLocations.length === 0 && props.searchQuery.length > 2 ?
@@ -101,7 +138,7 @@ const Home = (props) => {
                                                 return (
                                                     i > 4 ? null :
                                                         <div key={i} className={`bar ${i === 0 ? 'highlight' : null}`} onMouseDown={() => {
-                                                            getFullReport(`${location.lat},${location.lon}`)
+                                                            getFullReport(location)
                                                         }}>
                                                             <span>{location.name}</span>
                                                         </div>
@@ -125,7 +162,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setSearchValue: (value) => { dispatch({ type: 'SET_QUERY', payload: value }) },
         setSearchedLocations: (locations) => { dispatch({ type: 'SET_LOCATIONS', payload: locations }) },
-        setSelected: (data) => { dispatch({ type: 'SET_SELECTED', payload: data }) }
+        setSelected: (data) => { dispatch({ type: 'SET_SELECTED', payload: data }) },
+        setRecents: (data) => { dispatch({ type: 'SET_RECENTS', payload: data }) }
     }
 }
 
@@ -133,6 +171,7 @@ export default connect(state => {
     return {
         searchedLocations: state.searchedLocations,
         searchQuery: state.searchQuery,
-        setLocation: state.setLocation
+        setLocation: state.setLocation,
+        recents: state.recents
     }
 }, mapDispatchToProps)(Home)
