@@ -15,11 +15,31 @@
         h1{
             font-size: $size2;
             position: absolute;
-            top: 100px;
+            top: 66px;
         }
         .recents{
             display: flex;
             justify-content: center;
+            position: absolute;
+            top: 150px;
+            .recentCont{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin: 0 22px;
+                background-color: #ffffff82;
+                padding: 11px 22px;
+                border-radius: 20px;
+                text-align: center;
+                max-width: 200px;
+                &:hover{
+                    cursor: pointer;
+                }
+                .name{
+                    font-weight: bold;
+                }
+            }
         }
         .searchBar{
             position: relative;

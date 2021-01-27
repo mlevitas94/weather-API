@@ -1,7 +1,7 @@
 import React from 'react'
 import './Cookie.scss'
 
-const Cookie = (props) => {
+const Cookie = () => {
     const acceptCookies = () => {
         localStorage.setItem('recent', JSON.stringify([]))
         localStorage.setItem('saved', JSON.stringify([]))
@@ -10,7 +10,7 @@ const Cookie = (props) => {
     return (
         <div className='cookieCont'>
             <div className='infoFlex'>
-                This site uses cookies to save selected search results on your browser for the next visit. You may accept or decline the use of these cookies.
+                This site uses cookies to save selected search results on your browser for the next visit. <br/>You may accept or decline the use of these cookies.
                 <div>
                     <button onClick={() => {acceptCookies()}}>Accept</button>
                     <button onClick={() => { document.querySelector('.cookieCont').style.display = 'none' }}>Decline</button></div>

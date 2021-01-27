@@ -19,7 +19,7 @@ const Home = (props) => {
                 }
                 return Axios.request(`http://api.weatherapi.com/v1/current.json`, options)
             })
-            Promise.all(recentsRequest).then(results => console.log(results))
+            Promise.all(recentsRequest).then(results => props.setRecents(results))
         }
     }, [])
 
@@ -99,7 +99,7 @@ const Home = (props) => {
             props.searchedLocations.forEach(location => {
                 console.log(location.name, document.querySelector('.highlight').innerHTML)
                 if (location.name === document.querySelector('.highlight').innerText) {
-                    getFullReport(`${location.lat},${location.lon}`)
+                    getFullReport(location)
                 }
             });
         }
@@ -117,9 +117,18 @@ const Home = (props) => {
                                 {
                                     props.recents === null
                                         ?
-                                        'null'
+                                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                                         :
-                                        'recents'
+                                        props.recents.map((recent, i )=> {
+                                            console.log(recent)
+                                            return(
+                                                <div key={i} className='recentCont' onClick={() => {getFullReport(recent.data.location)}}>
+                                                    <span className='name'>{recent.data.location.name}</span>
+                                                    <img alt='weather icon' src={recent.data.current.condition.icon}/>
+                                                    <span>{recent.data.current.temp_f} º F</span>
+                                                </div>
+                                            )
+                                        })
                                 }
                             </div>
                             <div className='searchBar'>
@@ -128,11 +137,11 @@ const Home = (props) => {
                                     onChange={(e) => { autoComplete(e) }}
                                     onKeyUp={(e) => { arrowNavigation(e) }}
                                     onBlur={() => { document.querySelector('.autoCompleteCont').style.display = 'none' }}
-                                    onFocus={() => { localStorage.clear(); document.querySelector('.autoCompleteCont').style.display = 'block' }} />
+                                    onFocus={() => { document.querySelector('.autoCompleteCont').style.display = 'block' }} />
                                 <div className='autoCompleteCont'>
                                     {
                                         props.searchedLocations.length === 0 && props.searchQuery.length > 2 ?
-                                            <div>Loading</div>
+                                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                                             :
                                             props.searchedLocations?.map((location, i) => {
                                                 return (
