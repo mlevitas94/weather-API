@@ -63,7 +63,7 @@ const Home = (props) => {
                 return
             }
             
-            if (recents.length === 5) {
+            if (recents.length === 4) {
                 recents.pop()
             }
 
@@ -101,7 +101,6 @@ const Home = (props) => {
         }
         if (e.keyCode === 13) {
             props.searchedLocations.forEach(location => {
-                console.log(location.name, document.querySelector('.highlight').innerHTML)
                 if (location.name === document.querySelector('.highlight').innerText) {
                     getFullReport(location)
                 }
@@ -117,26 +116,8 @@ const Home = (props) => {
                     <div className='homeCont'>
                         <div className='middleFlex'>
                             <h1>Weather API</h1>
-                            <div className='recents'>
-                                {
-                                    props.recents === null
-                                        ?
-                                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-                                        :
-                                        props.recents.map((recent, i )=> {
-                                            console.log(recent)
-                                            return(
-                                                <div key={i} className='recentCont' onClick={() => {getFullReport(recent.data.location)}}>
-                                                    <span className='name'>{recent.data.location.name}</span>
-                                                    <img alt='weather icon' src={recent.data.current.condition.icon}/>
-                                                    <span>{recent.data.current.temp_f} º F</span>
-                                                </div>
-                                            )
-                                        })
-                                }
-                            </div>
                             <div className='searchBar'>
-                                <input maxLength="100" type='text' placeholder="Enter ZIP or name"
+                                <input maxLength="100" type='text' placeholder="City or Zip"
                                     value={props.searcheQuery}
                                     onChange={(e) => { autoComplete(e) }}
                                     onKeyUp={(e) => { arrowNavigation(e) }}
@@ -145,7 +126,7 @@ const Home = (props) => {
                                 <div className='autoCompleteCont'>
                                     {
                                         props.searchedLocations.length === 0 && props.searchQuery.length > 2 ?
-                                        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                                        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
                                             :
                                             props.searchedLocations?.map((location, i) => {
                                                 return (
@@ -160,6 +141,23 @@ const Home = (props) => {
                                     }
 
                                 </div>
+                            </div>
+                            <div className='recents'>
+                                {
+                                    props.recents === null
+                                        ?
+                                        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                                        :
+                                        props.recents.map((recent, i )=> {
+                                            return(
+                                                <div key={i} className='recentCont' onClick={() => {getFullReport(recent.data.location)}}>
+                                                    <span className='name'>{recent.data.location.name}</span>
+                                                    <img alt='weather icon' src={recent.data.current.condition.icon}/>
+                                                    <span>{recent.data.current.temp_f} º F</span>
+                                                </div>
+                                            )
+                                        })
+                                }
                             </div>
                         </div>
                     </div>

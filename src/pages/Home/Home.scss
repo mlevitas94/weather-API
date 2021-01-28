@@ -2,53 +2,35 @@
 
 .homeCont{
     display: flex;
+    justify-content: center;
     background: linear-gradient(to top right, #5900ff 0%, #ffffff 100%);
     height: 100vh;
+    overflow: hidden;
     .middleFlex{
         display: flex;
         height: 100%;
-        width: 100%;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
         position: relative;
+        padding-top: 66px;
+        overflow-y: auto;
+        overflow-x: hidden;
         h1{
             font-size: $size2;
-            position: absolute;
-            top: 66px;
-        }
-        .recents{
-            display: flex;
-            justify-content: center;
-            position: absolute;
-            top: 150px;
-            .recentCont{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                margin: 0 22px;
-                background-color: #ffffff82;
-                padding: 11px 22px;
-                border-radius: 20px;
-                text-align: center;
-                max-width: 200px;
-                &:hover{
-                    cursor: pointer;
-                }
-                .name{
-                    font-weight: bold;
-                }
-            }
+            margin-bottom: 44px;
         }
         .searchBar{
             position: relative;
+            margin: 66px 0;
             input{
                 font-size: $size1;
                 padding: 10px 15px;
                 border: none;
                 outline: none;
                 border-radius: 10px;
+                width: 80%;
+                margin: 0 auto;
+                display: block;
             }
             .autoCompleteCont{
                 background-color: white;
@@ -74,7 +56,40 @@
     
             }
         }
+        .recents{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 100%;
+            .recentCont{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: #ffffff82;
+                border-radius: 20px;
+                padding: 22px 11px;
+                min-width: 200px;
+                margin: 22px;
+                &:hover{
+                    cursor: pointer;
+                }
+                .name{
+                    font-weight: bold;
+                    text-align: center;
+                }
+            }
+        }
 
+    }
+    @media screen and (min-width: $widthSm){
+        .middleFlex{
+            .searchBar{
+                input{
+                    width: 350px;
+                }
+            }
+        }
     }
 
 }

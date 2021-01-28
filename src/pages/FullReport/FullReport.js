@@ -12,7 +12,8 @@ const FullReport = (props) => {
     const [tempType, setTempType] = useState('F')
 
     const getWeekDay = (day) => {
-        switch (day.getDay()) {
+        console.log(day)
+        switch (day.getUTCDay()) {
             case 0:
                 return 'Sunday'
             case 1:
