@@ -59,6 +59,10 @@ const Home = (props) => {
             }
 
             let recents = JSON.parse(localStorage.getItem('recent'))
+            if(recents.includes(`${location.lat},${location.lon}`)){
+                return
+            }
+            
             if (recents.length === 5) {
                 recents.pop()
             }
