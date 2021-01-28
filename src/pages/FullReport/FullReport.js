@@ -1,15 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import './FullReport.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { Redirect } from 'react-router-dom'
+import BackgroundChange from './BackgroundChange'
 
 const FullReport = (props) => {
+    console.log(props)
     const { setLocation } = props
     const forecastToday = !setLocation ? null : setLocation.forecast.forecastday[0]
 
     const [tempType, setTempType] = useState('F')
+
+    useEffect(() => {
+        if(setLocation){
+            document.querySelector('.fullReportCont').style.background = BackgroundChange(props.setLocation.current)
+            document.querySelector('.backgroundTransition').style.opacity = 0
+            document.querySelector('.fullReportFlex').style.opacity = 1
+            document.querySelector('.fullReportFlex').style.transform = 'translate(0px, 0px)'
+        }
+        
+    }, [])
 
     const getWeekDay = (day) => {
         console.log(day)
@@ -86,10 +98,10 @@ const FullReport = (props) => {
     }
 
     const timeCompare = () => {
-       const currentHour = new Date(setLocation.location.localtime).getHours()
-       return [...forecastToday.hour, ...setLocation.forecast.forecastday[1].hour].filter(hour => {
-        return currentHour <= new Date(hour.time).getHours()
-    }).slice(0, 5)
+        const currentHour = new Date(setLocation.location.localtime).getHours()
+        return [...forecastToday.hour, ...setLocation.forecast.forecastday[1].hour].filter(hour => {
+            return currentHour <= new Date(hour.time).getHours()
+        }).slice(0, 5)
 
     }
     return (
@@ -98,6 +110,7 @@ const FullReport = (props) => {
                 <Redirect to='/' />
                 :
                 <div className='fullReportCont'>
+                    <div className='backgroundTransition'></div>
                     <div className='fullReportFlex'>
 
                         <div className='header'>
@@ -112,7 +125,7 @@ const FullReport = (props) => {
                                     <span className='low'><FontAwesomeIcon icon={faChevronDown} /> {tempType === 'F' ? forecastToday.day.mintemp_f : forecastToday.day.mintemp_c}</span>
                                 </div>
                                 <div className='description'>
-                                    {forecastToday.day.condition.text}
+                                    {setLocation.current.condition.text}
                                 </div>
                             </div>
                             <div className='divider'></div>
@@ -135,11 +148,11 @@ const FullReport = (props) => {
                                 </div>
                                 <div>
                                     <span>Humidity</span>
-                                    <span>{forecastToday.day.avghumidity} %</span>
+                                    <span>{setLocation.current.humidity} %</span>
                                 </div>
                                 <div>
                                     <span>Wind MPH</span>
-                                    <span>{forecastToday.day.maxwind_mph}</span>
+                                    <span>{setLocation.current.wind_mph}</span>
                                 </div>
                             </div>
                         </div>
@@ -148,6 +161,7 @@ const FullReport = (props) => {
                                 return (
                                     <div key={i}>
                                         <span>{getTime(hour)}</span>
+                                        <img alt='weather icon hourly' src={hour.condition.icon}/>
                                         <span>{tempType === 'F' ? hour.temp_f : hour.temp_c} º</span>
                                     </div>
                                 )

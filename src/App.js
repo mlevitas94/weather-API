@@ -3,7 +3,6 @@ import Cookie from './Modals/Cookie/Cookie';
 import FullReport from './pages/FullReport/FullReport';
 import Home from './pages/Home/Home'
 function App() {
-  console.log(localStorage)
   return (
     <div className="App">
       <Switch>
