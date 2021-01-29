@@ -136,6 +136,10 @@ table {
 	border-spacing: 0;
 }
 
+.location{
+	display: none;
+}
+
 .lds-ring {
 	display: block;
 	position: relative;

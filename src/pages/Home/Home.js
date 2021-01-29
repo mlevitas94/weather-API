@@ -3,6 +3,9 @@ import './Home.scss'
 import Axios from 'axios'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
+import ModalMessage from '../../Modals/modalMessage/ModalMessage'
 const Home = (props) => {
 
     useEffect(() => {
@@ -59,10 +62,10 @@ const Home = (props) => {
             }
 
             let recents = JSON.parse(localStorage.getItem('recent'))
-            if(recents.includes(`${location.lat},${location.lon}`)){
+            if (recents.includes(`${location.lat},${location.lon}`)) {
                 return
             }
-            
+
             if (recents.length === 4) {
                 recents.pop()
             }
@@ -108,6 +111,19 @@ const Home = (props) => {
         }
 
     }
+
+    const showPosition = (positionResponse) => {
+        console.log(positionResponse)
+        if(positionResponse.code){
+            document.querySelector('.location').style.display = 'block'
+        }else if(positionResponse.coords){
+            const location = {
+                lat : positionResponse.coords.latitude,
+                lon : positionResponse.coords.longitude
+            }
+            getFullReport(location)
+        }
+    }
     return (
         <>
             {
@@ -123,10 +139,15 @@ const Home = (props) => {
                                     onKeyUp={(e) => { arrowNavigation(e) }}
                                     onBlur={() => { document.querySelector('.autoCompleteCont').style.display = 'none' }}
                                     onFocus={() => { document.querySelector('.autoCompleteCont').style.display = 'block' }} />
+                                <button onClick={() => {
+                                    navigator.geolocation.getCurrentPosition(showPosition, showPosition)
+                                }}>
+                                    <FontAwesomeIcon icon={faLocationArrow} />
+                                </button>
                                 <div className='autoCompleteCont'>
                                     {
                                         props.searchedLocations.length === 0 && props.searchQuery.length > 2 ?
-                                        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                                            <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
                                             :
                                             props.searchedLocations?.map((location, i) => {
                                                 return (
@@ -148,11 +169,11 @@ const Home = (props) => {
                                         ?
                                         <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
                                         :
-                                        props.recents.map((recent, i )=> {
-                                            return(
-                                                <div key={i} className='recentCont' onClick={() => {getFullReport(recent.data.location)}}>
+                                        props.recents.map((recent, i) => {
+                                            return (
+                                                <div key={i} className='recentCont' onClick={() => { getFullReport(recent.data.location) }}>
                                                     <span className='name'>{recent.data.location.name}</span>
-                                                    <img alt='weather icon' src={recent.data.current.condition.icon}/>
+                                                    <img alt='weather icon' src={recent.data.current.condition.icon} />
                                                     <span>{recent.data.current.temp_f} º F</span>
                                                 </div>
                                             )
@@ -160,6 +181,7 @@ const Home = (props) => {
                                 }
                             </div>
                         </div>
+                        <ModalMessage/>
                     </div>
                     :
                     <Redirect to={`/${props.setLocation.location.name}`} />
