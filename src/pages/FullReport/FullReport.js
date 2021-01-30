@@ -7,20 +7,19 @@ import { Redirect } from 'react-router-dom'
 import BackgroundChange from './BackgroundChange'
 
 const FullReport = (props) => {
-    console.log(props)
     const { setLocation } = props
     const forecastToday = !setLocation ? null : setLocation.forecast.forecastday[0]
 
     const [tempType, setTempType] = useState('F')
 
     useEffect(() => {
-        if(setLocation){
+        if (setLocation) {
             document.querySelector('.fullReportCont').style.background = BackgroundChange(props.setLocation.current)
             document.querySelector('.backgroundTransition').style.opacity = 0
             document.querySelector('.fullReportFlex').style.opacity = 1
             document.querySelector('.fullReportFlex').style.transform = 'translate(0px, 0px)'
         }
-        
+
     }, [])
 
     const getWeekDay = (day) => {
@@ -109,79 +108,82 @@ const FullReport = (props) => {
             {!forecastToday ?
                 <Redirect to='/' />
                 :
-                <div className='fullReportCont'>
-                    <div className='backgroundTransition'></div>
-                    <div className='fullReportFlex'>
+                setLocation === 'loading' ?
+                    'loading'
+                    :
+                    <div className='fullReportCont'>
+                        <div className='backgroundTransition'></div>
+                        <div className='fullReportFlex'>
 
-                        <div className='header'>
-                            <h3>{getDate(setLocation.location.localtime)} <span className='tempType' onClick={() => { setTempType(tempType === 'F' ? 'C' : 'F') }}>º {tempType}</span></h3>
-                        </div>
-                        <div className='mainInfo'>
-                            <div className='infoColumnLeft'>
-                                <h4>{setLocation.location.name}</h4>
-                                <span className='temp'>{tempType === 'F' ? setLocation.current.temp_f : setLocation.current.temp_c}º</span>
-                                <div className='highLow'>
-                                    <span className='high'> <FontAwesomeIcon icon={faChevronUp} /> {tempType === 'F' ? forecastToday.day.maxtemp_f : forecastToday.day.maxtemp_c}</span>
-                                    <span className='low'><FontAwesomeIcon icon={faChevronDown} /> {tempType === 'F' ? forecastToday.day.mintemp_f : forecastToday.day.mintemp_c}</span>
+                            <div className='header'>
+                                <h3>{getDate(setLocation.location.localtime)} <span className='tempType' onClick={() => { setTempType(tempType === 'F' ? 'C' : 'F') }}>º {tempType}</span></h3>
+                            </div>
+                            <div className='mainInfo'>
+                                <div className='infoColumnLeft'>
+                                    <h4>{setLocation.location.name}</h4>
+                                    <span className='temp'>{tempType === 'F' ? setLocation.current.temp_f : setLocation.current.temp_c}º</span>
+                                    <div className='highLow'>
+                                        <span className='high'> <FontAwesomeIcon icon={faChevronUp} /> {tempType === 'F' ? forecastToday.day.maxtemp_f : forecastToday.day.maxtemp_c}</span>
+                                        <span className='low'><FontAwesomeIcon icon={faChevronDown} /> {tempType === 'F' ? forecastToday.day.mintemp_f : forecastToday.day.mintemp_c}</span>
+                                    </div>
+                                    <div className='description'>
+                                        {setLocation.current.condition.text}
+                                    </div>
                                 </div>
-                                <div className='description'>
-                                    {setLocation.current.condition.text}
+                                <div className='divider'></div>
+                                <div className='infoColumnRight'>
+                                    <div>
+                                        <span>Sunrise</span>
+                                        <span>{forecastToday.astro.sunrise}</span>
+                                    </div>
+                                    <div>
+                                        <span>Sunset</span>
+                                        <span>{forecastToday.astro.sunset}</span>
+                                    </div>
+                                    <div>
+                                        <span>Precipitation</span>
+                                        <span>{forecastToday.day.daily_chance_of_rain} %</span>
+                                    </div>
+                                    <div>
+                                        <span>Snow</span>
+                                        <span>{forecastToday.day.daily_chance_of_snow} %</span>
+                                    </div>
+                                    <div>
+                                        <span>Humidity</span>
+                                        <span>{setLocation.current.humidity} %</span>
+                                    </div>
+                                    <div>
+                                        <span>Wind MPH</span>
+                                        <span>{setLocation.current.wind_mph}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='divider'></div>
-                            <div className='infoColumnRight'>
-                                <div>
-                                    <span>Sunrise</span>
-                                    <span>{forecastToday.astro.sunrise}</span>
-                                </div>
-                                <div>
-                                    <span>Sunset</span>
-                                    <span>{forecastToday.astro.sunset}</span>
-                                </div>
-                                <div>
-                                    <span>Precipitation</span>
-                                    <span>{forecastToday.day.daily_chance_of_rain} %</span>
-                                </div>
-                                <div>
-                                    <span>Snow</span>
-                                    <span>{forecastToday.day.daily_chance_of_snow} %</span>
-                                </div>
-                                <div>
-                                    <span>Humidity</span>
-                                    <span>{setLocation.current.humidity} %</span>
-                                </div>
-                                <div>
-                                    <span>Wind MPH</span>
-                                    <span>{setLocation.current.wind_mph}</span>
-                                </div>
+                            <div className='hourly'>
+                                {timeCompare().map((hour, i) => {
+                                    return (
+                                        <div key={i}>
+                                            <span>{getTime(hour)}</span>
+                                            <img alt='weather icon hourly' src={hour.condition.icon} />
+                                            <span>{tempType === 'F' ? hour.temp_f : hour.temp_c} º</span>
+                                        </div>
+                                    )
+                                })}
                             </div>
-                        </div>
-                        <div className='hourly'>
-                            {timeCompare().map((hour, i) => {
-                                return (
-                                    <div key={i}>
-                                        <span>{getTime(hour)}</span>
-                                        <img alt='weather icon hourly' src={hour.condition.icon}/>
-                                        <span>{tempType === 'F' ? hour.temp_f : hour.temp_c} º</span>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        <div className='threeDay'>
-                            {setLocation.forecast.forecastday.map((day, i) => {
-                                return (
-                                    <div key={i} className='row'>
-                                        <span className='weekday'>{getWeekDay(new Date(day.date))}</span>
-                                        <span className='icon'><img alt="weather icon" src={day.day.condition.icon} /></span>
-                                        <div className='highLow'><span><FontAwesomeIcon icon={faChevronUp} /> {tempType === 'F' ? day.day.maxtemp_f : day.day.maxtemp_c}</span> <span><FontAwesomeIcon icon={faChevronDown} /> {tempType === 'F' ? day.day.mintemp_f : day.day.mintemp_c}</span></div>
-                                    </div>
-                                )
-                            })}
+                            <div className='threeDay'>
+                                {setLocation.forecast.forecastday.map((day, i) => {
+                                    return (
+                                        <div key={i} className='row'>
+                                            <span className='weekday'>{getWeekDay(new Date(day.date))}</span>
+                                            <span className='icon'><img alt="weather icon" src={day.day.condition.icon} /></span>
+                                            <div className='highLow'><span><FontAwesomeIcon icon={faChevronUp} /> {tempType === 'F' ? day.day.maxtemp_f : day.day.maxtemp_c}</span> <span><FontAwesomeIcon icon={faChevronDown} /> {tempType === 'F' ? day.day.mintemp_f : day.day.mintemp_c}</span></div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+
                         </div>
 
                     </div>
-
-                </div>
             }
 
         </>

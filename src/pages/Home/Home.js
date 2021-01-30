@@ -48,6 +48,7 @@ const Home = (props) => {
 
     const getFullReport = (location) => {
         const key = process.env.REACT_APP_KEY
+        props.setSelected('loading')
         const options = {
             params: {
                 key,
@@ -113,13 +114,12 @@ const Home = (props) => {
     }
 
     const showPosition = (positionResponse) => {
-        console.log(positionResponse)
-        if(positionResponse.code){
+        if (positionResponse.code) {
             document.querySelector('.location').style.display = 'block'
-        }else if(positionResponse.coords){
+        } else if (positionResponse.coords) {
             const location = {
-                lat : positionResponse.coords.latitude,
-                lon : positionResponse.coords.longitude
+                lat: positionResponse.coords.latitude,
+                lon: positionResponse.coords.longitude
             }
             getFullReport(location)
         }
@@ -181,10 +181,14 @@ const Home = (props) => {
                                 }
                             </div>
                         </div>
-                        <ModalMessage/>
+                        <ModalMessage />
                     </div>
                     :
-                    <Redirect to={`/${props.setLocation.location.name}`} />
+                    props.setLocation === 'loading'
+                        ?
+                        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                        :
+                        <Redirect to={`/${props.setLocation.location.name}`} />
             }
 
         </>
