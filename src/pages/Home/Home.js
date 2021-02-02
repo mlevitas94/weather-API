@@ -140,10 +140,12 @@ const Home = (props) => {
                                     onBlur={() => { document.querySelector('.autoCompleteCont').style.display = 'none' }}
                                     onFocus={() => { document.querySelector('.autoCompleteCont').style.display = 'block' }} />
                                 <button onClick={() => {
+                                    props.setSelected('loading')
                                     navigator.geolocation.getCurrentPosition(showPosition, showPosition)
                                 }}>
                                     <FontAwesomeIcon icon={faLocationArrow} />
                                 </button>
+                                <span className='credit'>Powered by <a href="https://www.weatherapi.com/" title="Free Weather API" target='_blank' rel="noreferrer">WeatherAPI.com</a></span>
                                 <div className='autoCompleteCont'>
                                     {
                                         props.searchedLocations.length === 0 && props.searchQuery.length > 2 ?

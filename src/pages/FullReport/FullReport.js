@@ -9,7 +9,6 @@ import BackgroundChange from './BackgroundChange'
 const FullReport = (props) => {
     const { setLocation } = props
     const forecastToday = !setLocation ? null : setLocation.forecast.forecastday[0]
-
     const [tempType, setTempType] = useState('F')
 
     useEffect(() => {
