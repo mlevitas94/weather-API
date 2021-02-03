@@ -139,7 +139,7 @@ const Home = (props) => {
                     ?
                     <div className='homeCont'>
                         <div className='middleFlex'>
-                            <h1>Weather API</h1>
+                            <h1>ML Weather</h1>
                             <div className='searchBar'>
                                 <input maxLength="100" type='text' placeholder="City or Zip"
                                     value={props.searcheQuery}
