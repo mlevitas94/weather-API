@@ -53,6 +53,8 @@ const Home = (props) => {
     const getFullReport = (location) => {
         const key = process.env.REACT_APP_KEY
         props.setSelected('loading')
+        props.setSearchValue('')
+        props.setSearchedLocations([])
         const options = {
             params: {
                 key,

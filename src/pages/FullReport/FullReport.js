@@ -90,7 +90,10 @@ const FullReport = (props) => {
     }
 
     const getDate = (date) => {
-        const selectedDate = new Date(date)
+        console.log(date)
+        const selectedDate = new Date(date.replace(/-/g, "/"))
+
+        console.log(selectedDate)
         return `${getWeekDay(selectedDate)}, ${getMonth(selectedDate)} ${selectedDate.getDate()}`
     }
 

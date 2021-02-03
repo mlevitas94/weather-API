@@ -5,7 +5,7 @@ const Cookie = () => {
     const acceptCookies = () => {
         localStorage.setItem('recent', JSON.stringify([]))
         localStorage.setItem('saved', JSON.stringify([]))
-        document.querySelector('.cookieCont').style.display = 'none'
+        document.querySelector('.cookie').style.display = 'none'
     }
     return (
         <div className='modalCont cookie'>
