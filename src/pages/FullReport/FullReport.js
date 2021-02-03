@@ -22,7 +22,6 @@ const FullReport = (props) => {
     }, [])
 
     const getWeekDay = (day) => {
-        console.log(day)
         switch (day.getUTCDay()) {
             case 0:
                 return 'Sunday'

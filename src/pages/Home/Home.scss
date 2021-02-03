@@ -1,11 +1,11 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
-.homeCont{
+.homeCont {
     display: flex;
     justify-content: center;
     height: 100%;
     overflow: hidden;
-    .middleFlex{
+    .middleFlex {
         display: flex;
         height: 100%;
         width: 100%;
@@ -15,73 +15,85 @@
         padding-top: 66px;
         overflow-y: auto;
         overflow-x: hidden;
-        h1{
+        h1 {
             font-size: $size2;
             margin-bottom: 44px;
         }
-        .searchBar{
+        .searchBar {
             position: relative;
             margin: 66px 0;
-            input{
+            input {
                 font-size: $size1;
                 padding: 10px 15px;
                 border: none;
                 outline: none;
                 border-radius: 10px;
-                width: 80%;
+                width: 100%;
                 margin: 0 auto;
                 display: block;
+                box-sizing: border-box;
+                position: relative;
+                z-index: 10;
             }
-            button{
+            button {
                 position: absolute;
                 right: -60px;
                 border: none;
-                border-radius: 10px;
                 outline: none;
                 height: 100%;
-                background-color: #ffffff99;
                 width: 48px;
+                border-radius: 10px;
+                right: 0;
                 top: 0;
-                &:hover{
+                background-color: #e2e2e2;
+                z-index: 10;
+                &:hover {
                     cursor: pointer;
                 }
             }
-            .credit{
+            .credit {
                 position: absolute;
                 width: 100%;
                 text-align: center;
                 margin-top: 11px;
             }
-            .autoCompleteCont{
+            .autoCompleteCont {
                 background-color: white;
-                position: relative;
-                top: 39px;
                 position: absolute;
                 width: 100%;
+                top: 30px;
                 border-bottom-left-radius: 10px;
                 border-bottom-right-radius: 10px;
-                .highlight{
+
+                .highlight {
                     background-color: #cccccc;
                 }
-                div{
+                .noLocations{
                     padding: 11px;
-                    &:hover{
+                    margin-top: 22px;
+                    display: block;
+                }
+                div {
+                    padding: 11px;
+                    &:first-child{
+                        margin-top: 22px;
+                    }
+                    &:hover {
                         cursor: pointer;
                     }
-                    &:last-child{
+                    &:last-child {
                         border-bottom-right-radius: 10px;
                         border-bottom-left-radius: 10px;
                     }
                 }
-    
             }
         }
-        .recents{
+        .recents {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-evenly;
             width: 100%;
-            .recentCont{
+            .recentCont {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -91,25 +103,21 @@
                 padding: 22px 11px;
                 min-width: 200px;
                 margin: 22px;
-                &:hover{
+                &:hover {
                     cursor: pointer;
                 }
-                .name{
+                .name {
                     font-weight: bold;
                     text-align: center;
                 }
             }
         }
-
     }
-    @media screen and (min-width: $widthSm){
-        .middleFlex{
-            .searchBar{
-                input{
-                    width: 350px;
-                }
+    @media screen and (min-width: $widthSm) {
+        .middleFlex {
+            .searchBar {
+                width: 350px;
             }
         }
     }
-
 }

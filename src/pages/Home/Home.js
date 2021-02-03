@@ -9,6 +9,7 @@ import ModalMessage from '../../Modals/modalMessage/ModalMessage'
 const Home = (props) => {
 
     useEffect(() => {
+        props.setSelected(null)
         if (localStorage.getItem('recent') === null) {
             props.setRecents([])
         } else {
@@ -29,8 +30,8 @@ const Home = (props) => {
 
     const autoComplete = (e) => {
         props.setSearchValue(e.target.value)
-        if (e.target.value.length < 2) {
-            return
+        if (e.target.value.length < 3) {
+            return props.setSearchedLocations([])
         }
         const key = process.env.REACT_APP_KEY
         const options = {
@@ -40,6 +41,9 @@ const Home = (props) => {
             }
         }
         Axios.request(`http://api.weatherapi.com/v1/search.json`, options).then(res => {
+            if (res.data.length === 0) {
+                return props.setSearchedLocations(null)
+            }
             props.setSearchedLocations(res.data)
         }).catch(err => {
             console.log(err)
@@ -148,19 +152,22 @@ const Home = (props) => {
                                 <span className='credit'>Powered by <a href="https://www.weatherapi.com/" title="Free Weather API" target='_blank' rel="noreferrer">WeatherAPI.com</a></span>
                                 <div className='autoCompleteCont'>
                                     {
-                                        props.searchedLocations.length === 0 && props.searchQuery.length > 2 ?
-                                            <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                                        props.searchedLocations === null ?
+                                            <span className='noLocations'>Could not find any locations</span>
                                             :
-                                            props.searchedLocations?.map((location, i) => {
-                                                return (
-                                                    i > 4 ? null :
-                                                        <div key={i} className={`bar ${i === 0 ? 'highlight' : null}`} onMouseDown={() => {
-                                                            getFullReport(location)
-                                                        }}>
-                                                            <span>{location.name}</span>
-                                                        </div>
-                                                )
-                                            })
+                                            props.searchedLocations.length === 0 && props.searchQuery.length > 2 ?
+                                                <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                                                :
+                                                props.searchedLocations?.map((location, i) => {
+                                                    return (
+                                                        i > 4 ? null :
+                                                            <div key={i} className={`bar ${i === 0 ? 'highlight' : null}`} onMouseDown={() => {
+                                                                getFullReport(location)
+                                                            }}>
+                                                                <span>{location.name}</span>
+                                                            </div>
+                                                    )
+                                                })
                                     }
 
                                 </div>
@@ -190,7 +197,7 @@ const Home = (props) => {
                         ?
                         <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
                         :
-                        <Redirect to={`/${props.setLocation.location.name}`} />
+                        <Redirect push to={`/${props.setLocation.location.name}`} />
             }
 
         </>
