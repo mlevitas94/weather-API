@@ -13,7 +13,7 @@ const Cookie = () => {
                 This site uses cookies to save selected search results on your browser for the next visit. <br />You may accept or decline the use of these cookies.
                 <div>
                     <button onClick={() => { acceptCookies() }}>Accept</button>
-                    <button onClick={() => { document.querySelector('.cookieCont').style.display = 'none' }}>Decline</button>
+                    <button onClick={() => { document.querySelector('.cookie').style.display = 'none' }}>Decline</button>
                 </div>
             </div>
         </div>

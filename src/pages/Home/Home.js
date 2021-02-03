@@ -120,6 +120,8 @@ const Home = (props) => {
     const showPosition = (positionResponse) => {
         if (positionResponse.code) {
             document.querySelector('.location').style.display = 'block'
+            props.setSelected(null)
+
         } else if (positionResponse.coords) {
             const location = {
                 lat: positionResponse.coords.latitude,
@@ -190,7 +192,6 @@ const Home = (props) => {
                                 }
                             </div>
                         </div>
-                        <ModalMessage />
                     </div>
                     :
                     props.setLocation === 'loading'
@@ -199,7 +200,7 @@ const Home = (props) => {
                         :
                         <Redirect push to={`/${props.setLocation.location.name}`} />
             }
-
+            <ModalMessage />
         </>
     )
 }
