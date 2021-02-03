@@ -21,7 +21,7 @@ const Home = (props) => {
                         q: latLong,
                     }
                 }
-                return Axios.request(`http://api.weatherapi.com/v1/current.json`, options)
+                return Axios.request(`https://api.weatherapi.com/v1/current.json`, options)
             })
             Promise.all(recentsRequest).then(results => props.setRecents(results))
         }
@@ -40,7 +40,7 @@ const Home = (props) => {
                 q: e.target.value
             }
         }
-        Axios.request(`http://api.weatherapi.com/v1/search.json`, options).then(res => {
+        Axios.request(`https://api.weatherapi.com/v1/search.json`, options).then(res => {
             if (res.data.length === 0) {
                 return props.setSearchedLocations(null)
             }
@@ -62,7 +62,7 @@ const Home = (props) => {
                 days: 3
             }
         }
-        Axios.request(`http://api.weatherapi.com/v1/forecast.json`, options).then(res => {
+        Axios.request(`https://api.weatherapi.com/v1/forecast.json`, options).then(res => {
             res.data.length === 0 ? props.setSelected([]) : props.setSelected(res.data)
             if (localStorage.getItem('recent') === null || localStorage.getItem('saved') === null) {
                 return
