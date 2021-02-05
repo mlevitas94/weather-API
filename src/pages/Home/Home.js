@@ -210,7 +210,7 @@ const Home = (props) => {
                     :
                     props.setLocation === 'loading'
                         ?
-                        <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                        <div className="lds-ring fullReportLoader"><div></div><div></div><div></div><div></div></div>
                         :
                         <Redirect push to={`/${props.setLocation.location.name}`} />
             }
