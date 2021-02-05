@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Home.scss'
 import Axios from 'axios'
 import { connect } from 'react-redux'
@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 import ModalMessage from '../../Modals/modalMessage/ModalMessage'
 const Home = (props) => {
+
+    const [modal, setModal] = useState(null)
 
     useEffect(() => {
         props.setSelected(null)
@@ -121,8 +123,15 @@ const Home = (props) => {
 
     const showPosition = (positionResponse) => {
         if (positionResponse.code) {
-            document.querySelector('.location').style.display = 'block'
-            props.setSelected(null)
+            switch (positionResponse.code) {
+                case 1:
+                    setModal('off')
+                    props.setSelected(null)
+                    break;
+                default:
+                    setModal('error')
+                    props.setSelected(null)
+            }
 
         } else if (positionResponse.coords) {
             const location = {
@@ -149,7 +158,10 @@ const Home = (props) => {
                                     onFocus={() => { document.querySelector('.autoCompleteCont').style.display = 'block' }} />
                                 <button onClick={() => {
                                     props.setSelected('loading')
-                                    navigator.geolocation.getCurrentPosition(showPosition, showPosition)
+                                    navigator.geolocation.getCurrentPosition(showPosition, showPosition, {
+                                        enableHighAccuracy: false, 
+                                        timeout: 10000,
+                                    })
                                 }}>
                                     <FontAwesomeIcon icon={faLocationArrow} />
                                 </button>
@@ -202,7 +214,7 @@ const Home = (props) => {
                         :
                         <Redirect push to={`/${props.setLocation.location.name}`} />
             }
-            <ModalMessage />
+            { modal !== null ? <ModalMessage type={modal} setModal={setModal} /> : null }
         </>
     )
 }

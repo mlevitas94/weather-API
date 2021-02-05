@@ -60,6 +60,7 @@
             .autoCompleteCont {
                 background-color: white;
                 position: absolute;
+                box-sizing: border-box;
                 width: 100%;
                 top: 30px;
                 border-bottom-left-radius: 10px;

@@ -3,14 +3,16 @@
     bottom: 0;
     text-align: center;
     width: 100%;
-    background-color: white;
     line-height: 2rem;
     font-weight: bold;
     margin: 0 auto;
     left: 0;
     right: 0;
-    padding: 22px;
     z-index: 20;
+    .infoFlex{
+        background-color: white;
+        padding: 22px;
+    }
     button {
         margin: 22px;
         padding: 5px 15px;
