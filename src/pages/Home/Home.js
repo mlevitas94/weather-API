@@ -10,17 +10,18 @@ const Home = (props) => {
 
     const [modal, setModal] = useState(null)
 
+
     useEffect(() => {
         props.setSelected(null)
         if (localStorage.getItem('recent') === null) {
             props.setRecents([])
         } else {
             const key = process.env.REACT_APP_KEY
-            const recentsRequest = JSON.parse(localStorage.getItem('recent')).map(latLong => {
+            const recentsRequest = JSON.parse(localStorage.getItem('recent')).map(loca => {
                 const options = {
                     params: {
                         key,
-                        q: latLong,
+                        q: loca.latLong,
                     }
                 }
                 return Axios.request(`https://api.weatherapi.com/v1/current.json`, options)
@@ -71,15 +72,16 @@ const Home = (props) => {
             }
 
             let recents = JSON.parse(localStorage.getItem('recent'))
-            if (recents.includes(`${location.lat},${location.lon}`)) {
+            //compare by city name here from adding city name to each cookie item. bottom of this response
+            if (recents.filter(loca => loca.name === res.data.location.name).length > 0) {
                 return
             }
 
             if (recents.length === 4) {
                 recents.pop()
             }
-
-            localStorage.setItem('recent', JSON.stringify([`${location.lat},${location.lon}`, ...recents]))
+            //change to object which contains city name.
+            localStorage.setItem('recent', JSON.stringify([{name : res.data.location.name, latLong : `${location.lat},${location.lon}`}, ...recents]))
         }).catch(err => {
             console.log(err)
         })
