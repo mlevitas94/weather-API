@@ -16,8 +16,10 @@
         height: 100%;
         background: $default;
         position: absolute;
+        top: 0;
         z-index: 0;
         opacity: 1;
+        -webkit-transition: opacity 0.5s linear;
         transition: opacity 0.5s linear;
     }
     .lastUpdated{
@@ -36,6 +38,7 @@
         z-index: 1;
         opacity: 0;
         transform: translate(22px);
+        -webkit-transition: opacity 0.3s linear, transform, 0.3s linear;
         transition: opacity 0.3s linear, transform, 0.3s linear;
         .header {
             position: relative;
