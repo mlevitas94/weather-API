@@ -5,11 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { Redirect } from 'react-router-dom'
 import BackgroundChange from './BackgroundChange'
+import functions from '../../functions/functions'
 
 const FullReport = (props) => {
     const { setLocation } = props
     const forecastToday = !setLocation ? null : setLocation.forecast.forecastday[0]
     const [tempType, setTempType] = useState('F')
+    console.log(setLocation)
 
     useEffect(() => {
         if (setLocation) {
@@ -111,6 +113,7 @@ const FullReport = (props) => {
                     :
                     <div className='fullReportCont'>
                         <div className='backgroundTransition'></div>
+                        <span className='lastUpdated'>Last Updated: {functions.lastUpdatedFormat(setLocation.current.last_updated)}</span>
                         <div className='fullReportFlex'>
 
                             <div className='header'>

@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 import ModalMessage from '../../Modals/modalMessage/ModalMessage'
+import functions from '../../functions/functions'
 const Home = (props) => {
 
     const [modal, setModal] = useState(null)
@@ -81,7 +82,7 @@ const Home = (props) => {
                 recents.pop()
             }
             //change to object which contains city name.
-            localStorage.setItem('recent', JSON.stringify([{name : res.data.location.name, latLong : `${location.lat},${location.lon}`}, ...recents]))
+            localStorage.setItem('recent', JSON.stringify([{ name: res.data.location.name, latLong: `${location.lat},${location.lon}` }, ...recents]))
         }).catch(err => {
             console.log(err)
         })
@@ -143,6 +144,8 @@ const Home = (props) => {
             getFullReport(location)
         }
     }
+
+
     return (
         <>
             {
@@ -161,7 +164,7 @@ const Home = (props) => {
                                 <button onClick={() => {
                                     props.setSelected('loading')
                                     navigator.geolocation.getCurrentPosition(showPosition, showPosition, {
-                                        enableHighAccuracy: false, 
+                                        enableHighAccuracy: false,
                                         timeout: 10000,
                                     })
                                 }}>
@@ -199,6 +202,7 @@ const Home = (props) => {
                                         props.recents.map((recent, i) => {
                                             return (
                                                 <div key={i} className='recentCont' onClick={() => { getFullReport(recent.data.location) }}>
+                                                    <span className='lastUpdated'>Last updated: {functions.lastUpdatedFormat(recent.data.current.last_updated)} <br/> </span>
                                                     <span className='name'>{recent.data.location.name}</span>
                                                     <img alt='weather icon' src={recent.data.current.condition.icon} />
                                                     <span>{recent.data.current.temp_f} º F</span>
@@ -216,7 +220,7 @@ const Home = (props) => {
                         :
                         <Redirect push to={`/${props.setLocation.location.name}`} />
             }
-            { modal !== null ? <ModalMessage type={modal} setModal={setModal} /> : null }
+            { modal !== null ? <ModalMessage type={modal} setModal={setModal} /> : null}
         </>
     )
 }

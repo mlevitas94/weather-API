@@ -20,6 +20,13 @@
         opacity: 1;
         transition: opacity 0.5s linear;
     }
+    .lastUpdated{
+        position: absolute;
+        top: 5px;
+        width: 100%;
+        text-align: center;
+        color: $subtle;
+    }
     .fullReportFlex {
         display: flex;
         flex-direction: column;
