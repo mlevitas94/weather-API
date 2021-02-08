@@ -1,6 +1,6 @@
 module.exports = {
    lastUpdatedFormat : (lastUpdated) => {
-        const date = new Date(lastUpdated)
+        const date = new Date(lastUpdated.replace(/-/g, "/"))
         let hour = date.getHours()
         let morningOrNight = 'AM'
         if (hour > 11) {

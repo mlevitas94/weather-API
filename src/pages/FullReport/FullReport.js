@@ -11,7 +11,6 @@ const FullReport = (props) => {
     const { setLocation } = props
     const forecastToday = !setLocation ? null : setLocation.forecast.forecastday[0]
     const [tempType, setTempType] = useState('F')
-    console.log(setLocation)
 
     useEffect(() => {
         if (setLocation) {
@@ -78,7 +77,7 @@ const FullReport = (props) => {
     }
 
     const getTime = (time) => {
-        let hour = new Date(time.time).getHours()
+        let hour = new Date(time.time.replace(/-/g, "/")).getHours()
         let morningOrNight = 'AM'
         if (hour > 11) {
             morningOrNight = 'PM'
@@ -97,9 +96,10 @@ const FullReport = (props) => {
     }
 
     const timeCompare = () => {
-        const currentHour = new Date(setLocation.location.localtime).getHours()
+        const currentHour = new Date(setLocation.location.localtime.replace(/-/g, "/")).getHours()
+        console.log(currentHour)
         return [...forecastToday.hour, ...setLocation.forecast.forecastday[1].hour].filter(hour => {
-            return currentHour <= new Date(hour.time).getHours()
+            return currentHour <= new Date(hour.time.replace(/-/g, "/")).getHours()
         }).slice(0, 5)
 
     }
