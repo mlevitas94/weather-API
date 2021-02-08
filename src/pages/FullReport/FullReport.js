@@ -97,7 +97,6 @@ const FullReport = (props) => {
 
     const timeCompare = () => {
         const currentHour = new Date(setLocation.location.localtime.replace(/-/g, "/")).getHours()
-        console.log(currentHour)
         return [...forecastToday.hour, ...setLocation.forecast.forecastday[1].hour].filter(hour => {
             return currentHour <= new Date(hour.time.replace(/-/g, "/")).getHours()
         }).slice(0, 5)
